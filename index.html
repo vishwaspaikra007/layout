@@ -56,11 +56,10 @@
     <div class="btnContainer">
         <button class="btn" onclick="horizontalSet()">Horizontal</button>
         <button class="btn" onclick="verticalSet()">Vertical</button>
+        No. of element :- upto 5:
         <button class="btn" onclick="initialSet()">Set</button>
-        <button class="btn" onclick="layout(1)">lay1</button>
-        <button class="btn" onclick="layout(2)">lay2</button>
-        <button class="btn" onclick="layout(3)">lay3</button>
-        <button class="btn" onclick="layout(4)">lay4</button>
+        <input id="no" type="text" value=4>
+        <div class="layoutBtn"></div>
     </div>
     <div class="menu">
         set vertical and horizontal value for a box and click the box to apply the changes: <br>
@@ -80,57 +79,114 @@
 <script>
     var page = document.querySelector('.page');
     var stringForGrid;
-    var layoutsV = [[[1,2,1,2],[2,3,1,2],[3,4,1,2],[3]],[[1,2,1,2],[2,3,1,2],[1,4,2,3]]];
-    var lay1 = [[1,3,1,2],[1,2,2,3],[2,3,2,3],[2]];
-    var lay2 = [[1,2,1,2],[2,3,1,2],[1,3,2,3],[2]];
-    var lay3 = [[1,2,1,3],[2,3,1,2],[2,3,2,3],[2]];
-    var lay4 = [[1,2,1,2],[2,3,1,3],[1,2,2,3],[2]];
-    layout = x=> {
-        if(x==1)
-            layFunc(lay1);
-        if(x==2)
-            layFunc(lay2);
-        if(x==3)
-            layFunc(lay3);
-        if(x==4)
-            layFunc(lay4);
+    var layoutsV = [[[1,2,1,2],[2,3,1,2],[3,4,1,2],[3]],[[1,2,1,2],[2,3,1,2],[1,4,2,3],[3]]];
+    var lay3 = [[[1,3,1,2],[1,2,2,3],[2,3,2,3],[2]],
+                [[1,2,1,2],[2,3,1,2],[1,3,2,3],[2]],
+                [[1,2,1,3],[2,3,1,2],[2,3,2,3],[2]],
+                [[1,2,1,2],[2,3,1,3],[1,2,2,3],[2]],
+                [[1,2,1,2],[2,3,2,3],[3,4,3,4],[3]],
+                [[3,4,1,2],[2,3,2,3],[1,2,3,4],[3]]];
+
+    var lay4 = [[[1,2,1,2],[1,2,2,3],[2,3,1,2],[2,2,2,3],[2]],
+                [[1,4,1,2],[1,2,2,3],[2,3,2,3],[3,4,2,3],[3]],
+                [[1,4,2,3],[1,2,1,2],[2,3,1,2],[3,4,1,2],[3]],
+                [[1,2,1,4],[2,3,1,2],[2,3,2,3],[2,3,3,4],[2]],
+                [[2,3,1,4],[1,2,1,2],[1,2,2,3],[1,2,3,4],[2]]];
+
+    var lay5 = [[[1,2,1,2],[3,4,1,2],[2,3,2,3],[1,2,3,4],[3,4,3,4],[3]],
+                [[1,2,1,2],[2,3,2,3],[3,4,2,3],[2,3,3,4],[3,4,3,4],[3]],
+                [[1,5,1,3],[1,2,3,5],[2,3,3,5],[3,4,3,5],[4,5,3,5],[4]],
+                [[1,5,3,5],[1,2,1,3],[2,3,1,3],[3,4,1,3],[4,5,1,3],[4]],
+                [[1,3,1,5],[3,5,1,2],[3,5,2,3],[3,5,3,4],[3,5,4,5],[4]],
+                [[3,5,1,5],[1,3,1,2],[1,3,2,3],[1,3,3,4],[1,3,4,5],[4]]];
+
+    layout = (x,y) => {
+        if(y==3) {
+            layFunc(lay3[x]);
+        }
+        if(y==4) {
+            layFunc(lay4[x]);
+        }
+        if(y==5) {
+            layFunc(lay5[x]);
+        }
+        
     }
+    // var layArr = [[[[]]]];
+    // totEle=4;
+    // for(let grid=1;grid<=totEle;grid++){
+    //     for(let set=1;set<=grid+1;set++) {
+    //         for(let ele=1;ele<=totEle+1;ele++) {
+    //             for(let elePos=1;elePos<=grid+1;elePos++) {
+    //                 layArr[grid][set][ele][elePos]=1;
+    //             }
+    //         }
+    //     }
+    // }
     layFunc = (lay)=> {
-        var box1 = document.querySelector('#box1');
-        var box2 = document.querySelector('#box2');
-        var box3 = document.querySelector('#box3');
-        var page = document.querySelector('.page');
+        var len = lay.length-1;
+        // var box1 = document.querySelector('#box1');
+        // var box2 = document.querySelector('#box2');
+        // var box3 = document.querySelector('#box3');
+        // var page = document.querySelector('.page');
 
         var stringForGrid = "";
-        for(let i=0;i<lay[4];i++) {
+        for(let i=0;i<lay[len];i++) {
             stringForGrid+=" auto ";
         }
         page.style.gridTemplateColumns = stringForGrid;
 
-        box1.style.gridColumn = `${lay[0][0]} / ${lay[0][1]}`;
-        box2.style.gridColumn = `${lay[1][0]} / ${lay[1][1]}`;
-        box3.style.gridColumn = `${lay[2][0]} / ${lay[2][1]}`;
+        for(let i=0;i<len;i++) {
+            for(let j=0;j<4;j++) {
+                document.querySelector(`#box${i+1}`).style.gridColumn = `${lay[i][0]} / ${lay[i][1]}`;
+                document.querySelector(`#box${i+1}`).style.gridRow = `${lay[i][2]} / ${lay[i][3]}`;
+            }
+        }
 
-        box1.style.gridRow = `${lay[0][2]} / ${lay[0][3]}`;
-        box2.style.gridRow = `${lay[1][2]} / ${lay[1][3]}`;
-        box3.style.gridRow = `${lay[2][2]} / ${lay[2][3]}`;
+        // box1.style.gridColumn = `${lay[0][0]} / ${lay[0][1]}`;
+        // box2.style.gridColumn = `${lay[1][0]} / ${lay[1][1]}`;
+        // box3.style.gridColumn = `${lay[2][0]} / ${lay[2][1]}`;
+
+        // box1.style.gridRow = `${lay[0][2]} / ${lay[0][3]}`;
+        // box2.style.gridRow = `${lay[1][2]} / ${lay[1][3]}`;
+        // box3.style.gridRow = `${lay[2][2]} / ${lay[2][3]}`;
 
     }
-    var arr = ['<div class="box" id="box1" onclick="openMenu(this)"></div>',
-    '<div class="box" id="box2" onclick="openMenu(this)"></div>',
-    '<div class="box" id="box3" onclick="openMenu(this)"></div>'];
+    // var arr = ['<div class="box" id="box1" onclick="openMenu(this)"></div>',
+    // '<div class="box" id="box2" onclick="openMenu(this)"></div>',
+    // '<div class="box" id="box3" onclick="openMenu(this)"></div>',
+    // '<div class="box" id="box4" onclick="openMenu(this)"></div>'
+    // ];
+    var arr = [];
     initialSet = ()=> {
+        var no = document.querySelector('#no').value;
+        var len;
+        if(no==3)
+            len=6;
+        else if(no==4)
+            len=5;
+        else if(no==5)
+            len=6;
+        arr = [];
+        for(let i=0;i<no;i++)
+            arr[i] = `<div class="box" id="box${i+1}" onclick="openMenu(this)">${i+1}</div>`;
         var page = document.querySelector('.page');
-        stringForGrid = calcTotalElement();
+        var layoutBtn = document.querySelector('.layoutBtn');
+        stringForGrid = calcTotalElement(no);
         page.innerHTML = "";
         arr.map(x=> {
             page.innerHTML += x;
         });
         page.style.gridTemplateColumns = stringForGrid;
+        layoutBtn.innerHTML = "";
+        if(len>2) {
+            for(let i=0;i<len;i++)
+            layoutBtn.innerHTML += `<button class="btn" onclick="layout(${i},${arr.length})">lay${i+1}</button>`;
+        }
     };
-    calcTotalElement = ()=> {
+    calcTotalElement = (no)=> {
         var stringForGrid = "";
-        for(let i=0;i<arr.length;i++) {
+        for(let i=0;i<no;i++) {
             stringForGrid+=" auto ";
         }
         return stringForGrid;
